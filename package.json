@@ -1,0 +1,60 @@
+{
+  "name": "opencode-telegram",
+  "version": "1.0.0",
+  "description": "Hermes-style Telegram bot integration for opencode — forward messages, handle media, approve tool calls via inline buttons",
+  "keywords": [
+    "bot",
+    "hermes",
+    "opencode",
+    "plugin",
+    "telegram"
+  ],
+  "homepage": "https://github.com/aquaticcalf/opencode-telegram#readme",
+  "bugs": {
+    "url": "https://github.com/aquaticcalf/opencode-telegram/issues"
+  },
+  "license": "MIT",
+  "author": "aquaticcalf",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "fix": "oxfmt -c config/oxfmt.json && oxlint -c config/oxlint.json --fix && tsc --noEmit -p tsconfig.check.json",
+    "test": "vitest run",
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "watch": "tsc --watch"
+  },
+  "dependencies": {
+    "grammy": "^1.43.0"
+  },
+  "devDependencies": {
+    "@opencode-ai/plugin": "^1.16.2",
+    "@types/node": "^25.9.1",
+    "oxfmt": "^0.53.0",
+    "oxlint": "^1.68.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.8"
+  },
+  "peerDependencies": {
+    "@opencode-ai/plugin": ">=1.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
