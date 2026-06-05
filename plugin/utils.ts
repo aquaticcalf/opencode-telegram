@@ -1,4 +1,44 @@
+import { writeFileSync, unlinkSync, readFileSync, mkdirSync } from "fs"
+import { join } from "path"
+import { createHash } from "crypto"
 import type { Deferred } from "./types.js"
+
+export function acquireTokenLock(token: string, lockDir: string): boolean {
+  mkdirSync(lockDir, { recursive: true })
+  const hash = createHash("sha256").update(token).digest("hex").slice(0, 16)
+  const lockPath = join(lockDir, `telegram-${hash}.lock`)
+  const data = JSON.stringify({ pid: process.pid, time: Date.now() })
+
+  try {
+    writeFileSync(lockPath, data, { flag: "wx" })
+    return true
+  } catch {
+    try {
+      const existing = JSON.parse(readFileSync(lockPath, "utf-8"))
+      try {
+        process.kill(existing.pid, 0)
+        return false
+      } catch {
+        unlinkSync(lockPath)
+        writeFileSync(lockPath, data, { flag: "wx" })
+        return true
+      }
+    } catch {
+      return false
+    }
+  }
+}
+
+export function releaseTokenLock(token: string, lockDir: string): void {
+  const hash = createHash("sha256").update(token).digest("hex").slice(0, 16)
+  const lockPath = join(lockDir, `telegram-${hash}.lock`)
+  try {
+    const existing = JSON.parse(readFileSync(lockPath, "utf-8"))
+    if (existing.pid === process.pid) {
+      unlinkSync(lockPath)
+    }
+  } catch {}
+}
 
 export function deferred<T>(): Deferred<T> {
   let resolve!: (v: T) => void

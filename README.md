@@ -1,4 +1,4 @@
-# opencode-telegram
+# @aquaticcalf/opencode-telegram
 
 Telegram bot plugin for [opencode](https://opencode.ai). Forwards messages between Telegram and opencode, with inline approval buttons for tool execution.
 
@@ -17,7 +17,7 @@ Telegram bot plugin for [opencode](https://opencode.ai). Forwards messages betwe
 ## Installation
 
 ```bash
-npm install opencode-telegram
+npm install @aquaticcalf/opencode-telegram
 ```
 
 ## Usage
@@ -26,7 +26,7 @@ Add to your `opencode.json`:
 
 ```json
 {
-  "plugin": ["opencode-telegram"]
+  "plugin": ["@aquaticcalf/opencode-telegram"]
 }
 ```
 

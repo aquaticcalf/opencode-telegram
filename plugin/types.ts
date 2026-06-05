@@ -32,11 +32,18 @@ export type TelegramPermission = {
   time: { created: number }
 }
 
-export type TelegramPart = {
-  id?: string
-  type: string
-  text?: string
-  tool?: string
-  result?: string
-  [key: string]: unknown
+// Types that match opencode SDK V1 Part types
+export type SdkTextPart = { id: string; type: "text"; text: string; synthetic?: boolean }
+export type SdkToolPart = {
+  id: string
+  type: "tool"
+  callID: string
+  tool: string
+  state:
+    | { status: "pending" | "running"; input: Record<string, unknown> }
+    | { status: "completed"; input: Record<string, unknown>; output: string; title: string }
+    | { status: "error"; input: Record<string, unknown>; error: string }
 }
+export type SdkFilePart = { id: string; type: "file"; mime: string; url: string; filename?: string }
+export type SdkReasoningPart = { id: string; type: "reasoning"; text: string }
+export type SdkPart = SdkTextPart | SdkToolPart | SdkFilePart | SdkReasoningPart
